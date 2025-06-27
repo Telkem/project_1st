@@ -271,8 +271,8 @@
     const depositMaxValInput = document.getElementById('deposit_max_val');
 
     function formatDepositValue(value) {
-        if (value == 0) return '최소';
-        if (value == 20000) return '최대';
+        if (value == 0) return '0원';
+        if (value == 20000) return '상관없음';
         if (value >= 10000) {
             return (value / 10000) + '억';
         }
@@ -297,8 +297,8 @@
     const rentMaxValInput = document.getElementById('rent_max_val');
 
     function formatRentValue(value) {
-        if (value == 0) return '최소';
-        if (value == 200) return '최대';
+        if (value == 0) return '0원';
+        if (value == 200) return '상관없음';
         return value + '만';
     }
 
