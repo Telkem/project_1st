@@ -17,6 +17,15 @@
       margin: 0;
       padding: 20px;
     }
+    iframe {
+      width: 80%;
+      height: 500px;
+      border: 0;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
+      display: none;
+    }
     .container {
       background-color: #fff;
       border-radius: 12px;
@@ -44,7 +53,6 @@
       border: 1px solid #ddd;
       border-radius: 8px;
       font-size: 16px;
-      box-sizing: border-box;
     }
     .search-button {
       padding: 14px 20px;
@@ -54,63 +62,46 @@
       border-radius: 8px;
       font-size: 16px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
-      white-space: nowrap; /* Added to ensure text stays on one line */
     }
-    .search-button:hover {
-      background-color: #d0d0d0;
-    }
-    #search-results {
-      margin-top: 20px;
-      text-align: left;
-      border: 1px solid #eee; /* Added border for search results area */
-      border-radius: 8px;
-      max-height: 300px; /* Limit height for scrollability */
-      overflow-y: auto; /* Enable vertical scrolling */
-    }
-    .result-item {
-      padding: 12px 15px;
-      border-bottom: 1px solid #eee;
-      cursor: pointer;
-      transition: background-color 0.2s ease;
-      font-size: 15px;
-      color: #444;
-    }
-    .result-item:last-child {
-      border-bottom: none;
-    }
-    .result-item:hover {
-      background-color: #f0f0f0;
-    }
-
-    /* Styles for form groups and select (similar to filters.html for consistency) */
     .form-group {
       margin-bottom: 20px;
-      text-align: left; /* Align labels/inputs to the left within the container */
+      text-align: left;
     }
     .form-group label {
       display: block;
       margin-bottom: 8px;
       font-weight: 600;
       color: #333;
-      font-size: 15px; /* Adjust label font size if needed */
     }
     .form-group select {
-      width: calc(100% - 0px); /* Adjust width as needed for this context */
-      padding: 12px 10px;
+      width: 100%;
+      padding: 12px;
       border: 1px solid #ddd;
       border-radius: 8px;
       font-size: 16px;
-      box-sizing: border-box;
       background-color: white;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      appearance: none;
-      background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20256%20512%22%3E%3Cpath%20fill%3D%22%23495057%22%20d%3D%22M192%20256L64%20128v256l128-128z%22%2F%3E%3C%2Fsvg%3E');
+      background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"%3E%3Cpath fill="%23495057" d="M192 256L64 128v256l128-128z"/%3E%3C/svg%3E');
       background-repeat: no-repeat;
       background-position: right 10px center;
       background-size: 12px;
       padding-right: 30px;
+    }
+    #search-results {
+      margin-top: 20px;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .result-item {
+      padding: 12px 15px;
+      border-bottom: 1px solid #eee;
+      cursor: pointer;
+      font-size: 15px;
+      color: #444;
+    }
+    .result-item:hover {
+      background-color: #f0f0f0;
     }
   </style>
 </head>
@@ -137,42 +128,33 @@
       </select>
     </div>
 
-    <div id="search-results">
-      </div>
+    <div id="search-results"></div>
   </div>
+
+  <iframe id="naver-map" src="https://map.naver.com" allowfullscreen loading="lazy"></iframe>
 
   <script>
     function searchAddress() {
       const addressInput = document.getElementById('address-input').value.toLowerCase();
       const radius = document.getElementById('radius-select').value;
       const searchResultsDiv = document.getElementById('search-results');
+      const iframeMap = document.getElementById('naver-map');
       searchResultsDiv.innerHTML = '<p style="text-align: center; padding: 20px;">검색 중...</p>';
 
       const allDummyAddresses = [
         '서울특별시 강남구 테헤란로 123',
         '서울특별시 종로구 세종대로 456',
-        '서울특별시 마포구 양화로 789',
-        '서울특별시 서초구 강남대로 1234',
-        '서울특별시 송파구 올림픽로 100',
-        '부산광역시 해운대구 센텀남대로 123',
-        '부산광역시 부산진구 중앙대로 456',
-        '대전광역시 서구 둔산로 50',
-        '광주광역시 서구 상무대로 300',
-        '인천광역시 남동구 서창남로 15',
-        '경기도 성남시 분당구 판교역로 20',
-        '경기도 수원시 영통구 광교중앙로 100',
-        '제주시 서해안로 10',
-        '천안시 서북구 두정동 500',
+        '서울특별시 마포구 양화로 789'
       ];
-
 
       setTimeout(() => {
         let resultsHtml = '<h3>검색 결과:</h3>';
         const filteredResults = allDummyAddresses.filter(addr => addr.toLowerCase().includes(addressInput));
 
         if (addressInput === '') {
-            searchResultsDiv.innerHTML = `<p style="text-align: center; padding: 20px; color: #888;">검색어를 입력해주세요.</p>`;
-            return;
+          searchResultsDiv.innerHTML = `<p style="text-align: center; padding: 20px; color: #888;">검색어를 입력해주세요.</p>`;
+          iframeMap.style.display = 'none';
+          return;
         }
 
         if (filteredResults.length > 0) {
@@ -180,18 +162,25 @@
             resultsHtml += `<div class="result-item" onclick="selectAddress('${result}', '${radius}')">${result} (반경 ${radius}km)</div>`;
           });
           searchResultsDiv.innerHTML = resultsHtml;
+          iframeMap.style.display = 'block';
         } else {
           searchResultsDiv.innerHTML = `<p style="text-align: center; padding: 20px; color: #888;">죄송합니다. '${addressInput}'에 대한 검색 결과가 없습니다.</p>`;
+          iframeMap.style.display = 'none';
         }
       }, 700);
     }
 
-    function selectAddress(address, radius) {
-      const formattedAddress = `회사위주-${address} (반경 ${radius}km)`;
-      // filters.html로 이동하면서 search_type=company 파라미터 추가
-      window.location.href = 'filters.html?selected_region=' + encodeURIComponent(formattedAddress) + '&search_type=company';
-    }
+   function selectAddress(address, radius) {
+  const formattedAddress = `회사위주-${address} (반경 ${radius}km)`;
+  const iframeMap = document.getElementById('naver-map');
+  const mapUrl = `https://map.naver.com/v5/search/${encodeURIComponent(address)}`;
+  
+  iframeMap.src = `https://map.naver.com/v5/search/${encodeURIComponent(address)}/place`;
+  iframeMap.style.display = 'block';
 
+  // 아래 줄은 자동 이동이므로 선택적으로 사용하세요
+   window.location.href = 'filters.html?selected_region=' + encodeURIComponent(formattedAddress);
+}
     document.getElementById('address-input').addEventListener('keypress', function(event) {
       if (event.key === 'Enter') {
         event.preventDefault();
