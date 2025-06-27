@@ -68,67 +68,60 @@
       margin-top: 10px; /* Space between label and select */
     }
 
-    /* Style for the options displayed as buttons under Age Group */
-    /* .options-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 10px;
-      justify-content: space-between;
-    }
-    .option-button {
-      flex: 1 1 calc(50% - 10px);
-      padding: 12px 15px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      background-color: #fff;
-      text-align: center;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background-color 0.3s ease, border-color 0.3s ease;
+    /* Styles for the range slider */
+    .range-slider-container {
+      width: 100%;
+      padding: 0 10px; /* Add some padding to prevent labels from touching edges */
       box-sizing: border-box;
+      margin-top: 10px; /* Space between label and slider */
     }
-    .option-button.selected {
-      background-color: #e0f2f7;
-      border-color: #3a86ff;
-      color: #3a86ff;
-      font-weight: 600;
-    } */ /* Removed these styles as Age Group is now a select */
 
-    /* Specific width for slider labels, not a general option-button */
     .slider-labels {
-        display: flex;
-        justify-content: space-between;
+        display: flex; /* Changed from grid to flex */
+        justify-content: space-between; /* Distribute items evenly with space between them */
         margin-top: 10px;
-        padding: 0 10px; /* Adjust padding to align with slider track if needed */
         font-size: 14px;
         color: #555;
     }
     .slider-labels span {
-        text-align: center;
-        flex: 1; /* Distribute space evenly */
+        text-align: center; /* Center text within each span */
     }
-    /* Placeholder for the slider track - actual slider would be input[type="range"] */
-    .slider-track {
-        width: 100%;
-        height: 5px;
-        background: #ddd;
-        border-radius: 5px;
-        margin-top: 5px;
-        position: relative;
-    }
-    .slider-thumb {
-        position: absolute;
-        width: 15px;
-        height: 15px;
-        background: #3a86ff;
-        border-radius: 50%;
-        top: 50%;
-        transform: translateY(-50%);
-        cursor: grab;
-    }
-    /* You'd have multiple .slider-thumb for a range slider or a more complex single one */
+    /* Removed specific nth-child grid styles as they are not needed with flex */
 
+
+    input[type="range"] {
+      width: 100%;
+      -webkit-appearance: none; /* Override default look */
+      appearance: none;
+      height: 5px; /* Height of the track */
+      background: #ddd; /* Track color */
+      border-radius: 5px;
+      outline: none; /* Remove focus outline */
+      margin: 10px 0; /* Vertical margin */
+    }
+
+    /* Webkit (Chrome, Safari, Edge) thumb style */
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px; /* Size of the thumb */
+      height: 20px;
+      background: #3a86ff; /* Thumb color */
+      border-radius: 50%; /* Make it round */
+      cursor: grab;
+      margin-top: -7.5px; /* Center thumb vertically on track */
+      box-shadow: 0 0 2px rgba(0,0,0,0.2);
+    }
+
+    /* Firefox thumb style */
+    input[type="range"]::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      background: #3a86ff;
+      border-radius: 50%;
+      cursor: grab;
+      box-shadow: 0 0 2px rgba(0,0,0,0.2);
+    }
 
     .button-group {
       display: flex;
@@ -199,32 +192,34 @@
 
       <div class="form-group">
         <label>원하는 보증금 범위를 선택하세요</label>
-        <div class="slider-labels">
-            <span>최소</span>
-            <span>5천만</span>
-            <span>1억</span>
-            <span>1.5억</span>
-            <span>최대</span>
-        </div>
-        <div class="slider-track">
+        <div class="range-slider-container">
+            <input type="range" id="depositRange" name="deposit" min="0" max="20000" step="100" value="0">
+            <div class="slider-labels">
+                <span>최소</span>
+                <span>5천만</span>
+                <span>1억</span>
+                <span>1.5억</span>
+                <span>최대</span>
             </div>
-        <input type="hidden" name="deposit_min" value="" />
-        <input type="hidden" name="deposit_max" value="" />
+            <input type="hidden" name="deposit_min_val" id="deposit_min_val" value="" />
+            <input type="hidden" name="deposit_max_val" id="deposit_max_val" value="" />
+        </div>
       </div>
 
       <div class="form-group">
         <label>원하는 월세를 범위를 선택하세요</label>
-        <div class="slider-labels">
-            <span>최소</span>
-            <span>50만</span>
-            <span>100만</span>
-            <span>150만</span>
-            <span>최대</span>
-        </div>
-        <div class="slider-track">
+        <div class="range-slider-container">
+            <input type="range" id="rentRange" name="rent" min="0" max="200" step="10" value="0">
+            <div class="slider-labels">
+                <span>최소</span>
+                <span>50만</span>
+                <span>100만</span>
+                <span>150만</span>
+                <span>최대</span>
             </div>
-        <input type="hidden" name="rent_min" value="" />
-        <input type="hidden" name="rent_max" value="" />
+            <input type="hidden" name="rent_min_val" id="rent_min_val" value="" />
+            <input type="hidden" name="rent_max_val" id="rent_max_val" value="" />
+        </div>
       </div>
 
       <div class="form-group">
@@ -260,7 +255,25 @@
   </div>
 
   <script>
-    // Removed the JavaScript for age group buttons as it's now a select dropdown.
+    const depositRange = document.getElementById('depositRange');
+    const depositMinValInput = document.getElementById('deposit_min_val'); // Placeholder for min
+    const depositMaxValInput = document.getElementById('deposit_max_val'); // Placeholder for max
+
+    depositRange.addEventListener('input', () => {
+        depositMaxValInput.value = depositRange.value;
+    });
+
+    const rentRange = document.getElementById('rentRange');
+    const rentMinValInput = document.getElementById('rent_min_val'); // Placeholder for min
+    const rentMaxValInput = document.getElementById('rent_max_val'); // Placeholder for max
+
+    rentRange.addEventListener('input', () => {
+        rentMaxValInput.value = rentRange.value;
+    });
+
+    // Set initial values (optional, based on your form logic)
+    depositMaxValInput.value = depositRange.value;
+    rentMaxValInput.value = rentRange.value;
   </script>
 </body>
 </html>
