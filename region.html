@@ -65,13 +65,9 @@
     });
 
     document.getElementById('my-neighborhood-button').addEventListener('click', function(event) {
-      event.preventDefault();
-      // For "내가 원하는 동네", you might redirect to filters.html
-      // with a general region choice or to a different page for text input.
-      // For now, it will alert and redirect back to filters.html with a generic value.
-      alert('내가 원하는 동네 선택됨! (filters.html로 이동)');
-      window.location.href = 'filters.html?selected_region=' + encodeURIComponent('내가 원하는 동네');
-    });
+  event.preventDefault();
+  window.location.href = 'region_seoul.html';
+});
   </script>
 </body>
 </html>
