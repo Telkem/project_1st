@@ -279,7 +279,7 @@
     function selectAddress(address, radius) {
       const formattedRadius = formatRadiusValue(radiusValues.indexOf(parseInt(radius)));
       const formattedAddress = `회사위주-${address} (반경 ${formattedRadius})`;
-      // filters.html로 이동하면서 search_type=company 파라미터 추가
+      //  filters.html로 이동하면서 search_type=company 파라미터 추가
       window.location.href = 'filters.html?selected_region=' + encodeURIComponent(formattedAddress) + '&search_type=company';
     }
 
