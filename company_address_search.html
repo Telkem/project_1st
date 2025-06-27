@@ -55,7 +55,7 @@
       font-size: 16px;
       cursor: pointer;
       transition: background-color 0.3s ease;
-      white-space: nowrap; /* Added to ensure text stays on one line */
+      white-space: nowrap;
     }
     .search-button:hover {
       background-color: #d0d0d0;
@@ -63,10 +63,10 @@
     #search-results {
       margin-top: 20px;
       text-align: left;
-      border: 1px solid #eee; /* Added border for search results area */
+      border: 1px solid #eee;
       border-radius: 8px;
-      max-height: 300px; /* Limit height for scrollability */
-      overflow-y: auto; /* Enable vertical scrolling */
+      max-height: 300px;
+      overflow-y: auto;
     }
     .result-item {
       padding: 12px 15px;
@@ -83,35 +83,94 @@
       background-color: #f0f0f0;
     }
 
-    /* Styles for form groups and select (similar to filters.html for consistency) */
+    /* Styles for form groups (kept for consistency, though label structure changed) */
     .form-group {
       margin-bottom: 20px;
-      text-align: left; /* Align labels/inputs to the left within the container */
+      text-align: left;
     }
     .form-group label {
       display: block;
       margin-bottom: 8px;
       font-weight: 600;
       color: #333;
-      font-size: 15px; /* Adjust label font size if needed */
+      font-size: 15px;
     }
-    .form-group select {
-      width: calc(100% - 0px); /* Adjust width as needed for this context */
-      padding: 12px 10px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 16px;
+
+    /* --- Styles for the new radius range slider (copied/adapted from filters.html) --- */
+    .range-slider-container {
+      width: 100%;
+      padding: 0 10px; /* Add some padding to prevent labels from touching edges */
       box-sizing: border-box;
-      background-color: white;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      appearance: none;
-      background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20256%20512%22%3E%3Cpath%20fill%3D%22%23495057%22%20d%3D%22M192%20256L64%20128v256l128-128z%22%2F%3E%3C%2Fsvg%3E');
-      background-repeat: no-repeat;
-      background-position: right 10px center;
-      background-size: 12px;
-      padding-right: 30px;
+      margin-top: 10px; /* Space between label and slider */
+      background-color: #e0e0e0; /* Gray background for the slider area as in image */
+      border-radius: 8px;
+      padding: 20px; /* Padding to match the button/input height */
     }
+
+    .slider-title {
+      color: #333;
+      margin-bottom: 20px;
+      font-size: 18px;
+      font-weight: 600;
+      text-align: center; /* Center the title */
+    }
+
+    .slider-labels {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+        font-size: 14px;
+        color: #555;
+    }
+    .slider-labels span {
+        text-align: center;
+        flex-grow: 1; /* Distribute space evenly */
+    }
+
+    input[type="range"] {
+      width: 100%;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 5px;
+      background: #ddd;
+      border-radius: 5px;
+      outline: none;
+      margin: 10px 0;
+    }
+
+    /* Webkit (Chrome, Safari, Edge) thumb style */
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      background: #3a86ff; /* Blue color for thumb */
+      border-radius: 50%;
+      cursor: grab;
+      margin-top: -7.5px;
+      box-shadow: 0 0 2px rgba(0,0,0,0.2);
+    }
+
+    /* Firefox thumb style */
+    input[type="range"]::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      background: #3a86ff; /* Blue color for thumb */
+      border-radius: 50%;
+      cursor: grab;
+      box-shadow: 0 0 2px rgba(0,0,0,0.2);
+    }
+
+    /* Style for displaying current value */
+    .current-value-display {
+        display: block;
+        text-align: center;
+        font-size: 16px;
+        font-weight: 600;
+        color: #3a86ff; /* Blue color for current value */
+        margin-bottom: 5px;
+    }
+    /* --- End of new slider styles --- */
   </style>
 </head>
 <body>
@@ -119,22 +178,24 @@
     <h1>회사 주소를 입력해주세요!</h1>
 
     <div class="form-group">
-      <label for="address-input">주소 검색</label>
       <div class="search-box">
         <input type="text" id="address-input" class="search-input" placeholder="도로명, 지번, 건물명 검색" />
         <button class="search-button" onclick="searchAddress()">검색</button>
       </div>
     </div>
 
-    <div class="form-group">
-      <label for="radius-select">반경 선택</label>
-      <select id="radius-select">
-        <option value="1">1km</option>
-        <option value="3" selected>3km</option>
-        <option value="5">5km</option>
-        <option value="10">10km</option>
-        <option value="999">반경 무제한</option>
-      </select>
+    <div class="range-slider-container">
+      <div class="slider-title">반경을 선택해주세요</div>
+      <span id="radiusCurrentValue" class="current-value-display"></span>
+      <input type="range" id="radiusRange" name="radius" min="0" max="4" step="1" value="1">
+      <div class="slider-labels">
+          <span>1km</span>
+          <span>3km</span>
+          <span>5km</span>
+          <span>10km</span>
+          <span>무제한</span>
+      </div>
+      <input type="hidden" name="radius_val" id="radius_val" value="3" />
     </div>
 
     <div id="search-results">
@@ -142,9 +203,38 @@
   </div>
 
   <script>
+    const radiusValues = [1, 3, 5, 10, 999]; // Actual values for 1km, 3km, 5km, 10km, 무제한
+    const radiusRange = document.getElementById('radiusRange');
+    const radiusCurrentValueDisplay = document.getElementById('radiusCurrentValue');
+    const radiusValInput = document.getElementById('radius_val');
+
+    // Initialize the range slider's min/max/step values to match the array indices
+    radiusRange.min = 0;
+    radiusRange.max = radiusValues.length - 1;
+    radiusRange.step = 1;
+    radiusRange.value = 1; // Default to index 1, which is 3km
+
+    function formatRadiusValue(index) {
+        const value = radiusValues[index];
+        if (value === 999) return '무제한';
+        return value + 'km';
+    }
+
+    radiusRange.addEventListener('input', () => {
+        const index = parseInt(radiusRange.value);
+        radiusCurrentValueDisplay.textContent = formatRadiusValue(index);
+        radiusValInput.value = radiusValues[index]; // Store the actual numeric radius
+    });
+
+    // Set initial display and hidden input value
+    radiusCurrentValueDisplay.textContent = formatRadiusValue(parseInt(radiusRange.value));
+    radiusValInput.value = radiusValues[parseInt(radiusRange.value)];
+
+
     function searchAddress() {
       const addressInput = document.getElementById('address-input').value.toLowerCase();
-      const radius = document.getElementById('radius-select').value;
+      // Get the radius from the current hidden input value, which is updated by the slider
+      const radius = radiusValInput.value;
       const searchResultsDiv = document.getElementById('search-results');
       searchResultsDiv.innerHTML = '<p style="text-align: center; padding: 20px;">검색 중...</p>';
 
@@ -177,7 +267,7 @@
 
         if (filteredResults.length > 0) {
           filteredResults.forEach(result => {
-            resultsHtml += `<div class="result-item" onclick="selectAddress('${result}', '${radius}')">${result} (반경 ${radius}km)</div>`;
+            resultsHtml += `<div class="result-item" onclick="selectAddress('${result}', '${radius}')">${result} (반경 ${formatRadiusValue(radiusValues.indexOf(parseInt(radius)))})</div>`;
           });
           searchResultsDiv.innerHTML = resultsHtml;
         } else {
@@ -187,7 +277,8 @@
     }
 
     function selectAddress(address, radius) {
-      const formattedAddress = `회사위주-${address} (반경 ${radius}km)`;
+      const formattedRadius = formatRadiusValue(radiusValues.indexOf(parseInt(radius)));
+      const formattedAddress = `회사위주-${address} (반경 ${formattedRadius})`;
       // filters.html로 이동하면서 search_type=company 파라미터 추가
       window.location.href = 'filters.html?selected_region=' + encodeURIComponent(formattedAddress) + '&search_type=company';
     }
