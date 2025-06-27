@@ -143,17 +143,11 @@
 
   <script>
     function searchAddress() {
-      const addressInput = document.getElementById('address-input').value.toLowerCase(); // Convert input to lower case for case-insensitive search
+      const addressInput = document.getElementById('address-input').value.toLowerCase();
       const radius = document.getElementById('radius-select').value;
       const searchResultsDiv = document.getElementById('search-results');
       searchResultsDiv.innerHTML = '<p style="text-align: center; padding: 20px;">검색 중...</p>';
 
-      // IMPORTANT: This is a SIMULATION.
-      // In a real application, you would integrate with a real address search API
-      // (e.g., Kakao Maps API, Naver Maps API, etc.) via a backend server.
-      // The code below just shows dummy results for demonstration.
-
-      // A more comprehensive list of dummy addresses for better simulation
       const allDummyAddresses = [
         '서울특별시 강남구 테헤란로 123',
         '서울특별시 종로구 세종대로 456',
@@ -176,7 +170,7 @@
         let resultsHtml = '<h3>검색 결과:</h3>';
         const filteredResults = allDummyAddresses.filter(addr => addr.toLowerCase().includes(addressInput));
 
-        if (addressInput === '') { // If search input is empty, show no results or a prompt
+        if (addressInput === '') {
             searchResultsDiv.innerHTML = `<p style="text-align: center; padding: 20px; color: #888;">검색어를 입력해주세요.</p>`;
             return;
         }
@@ -189,21 +183,18 @@
         } else {
           searchResultsDiv.innerHTML = `<p style="text-align: center; padding: 20px; color: #888;">죄송합니다. '${addressInput}'에 대한 검색 결과가 없습니다.</p>`;
         }
-      }, 700); // Simulate a 0.7-second delay for the API call
+      }, 700);
     }
 
-    // Function to handle selection of an address
     function selectAddress(address, radius) {
-      // Format the address string to include the radius
       const formattedAddress = `회사위주-${address} (반경 ${radius}km)`;
-      // Redirect to filters.html and pass the formatted address as a URL parameter
-      window.location.href = 'filters.html?selected_region=' + encodeURIComponent(formattedAddress);
+      // filters.html로 이동하면서 search_type=company 파라미터 추가
+      window.location.href = 'filters.html?selected_region=' + encodeURIComponent(formattedAddress) + '&search_type=company';
     }
 
-    // Allow searching by pressing Enter key
     document.getElementById('address-input').addEventListener('keypress', function(event) {
       if (event.key === 'Enter') {
-        event.preventDefault(); // Prevent default form submission if any
+        event.preventDefault();
         searchAddress();
       }
     });

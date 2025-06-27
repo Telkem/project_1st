@@ -186,8 +186,7 @@
 </head>
 <body>
   <div class="form-container">
-    <form action="results.html" method="get">
-      <div class="form-group">
+    <form id="filterForm" action="results.html" method="get"> <div class="form-group">
         <label>연령대를 선택하세요<i class="fas fa-chevron-down arrow-icon"></i></label>
         <select name="age_group">
           <option value="">선택 안함</option>
@@ -313,22 +312,30 @@
     window.addEventListener('load', () => {
         const urlParams = new URLSearchParams(window.location.search);
         let selectedRegion = urlParams.get('selected_region');
-        const regionButtonTextSpan = document.querySelector('.region-button .placeholder-text');
-        const hiddenRegionInput = document.getElementById('selected-region-input');
+        const searchType = urlParams.get('search_type'); // search_type 파라미터 읽기
 
-        if (selectedRegion) {
-            selectedRegion = decodeURIComponent(selectedRegion);
-            regionButtonTextSpan.textContent = selectedRegion;
-            regionButtonTextSpan.style.color = '#333';
-            hiddenRegionInput.value = selectedRegion;
+        // '이전' 버튼 링크 업데이트
+        const previousButton = document.querySelector('.previous-button');
+        if (searchType === 'company') {
+            previousButton.href = 'company_address_search.html';
+        } else if (searchType === 'region') {
+            previousButton.href = 'region.html';
+        } else {
+            previousButton.href = 'region.html'; // 기본값
         }
 
-        const regionSelectionButton = document.getElementById('region-selection-button');
-        regionSelectionButton.href = 'region.html';
+        // 폼 제출 액션 변경
+        const filterForm = document.getElementById('filterForm');
+        if (searchType === 'company') {
+            filterForm.action = 'results.html'; // 회사 선택 시 results.html
+        } else if (searchType === 'region') {
+            filterForm.action = 'result2.html'; // 지역 선택 시 result2.html
+        } else {
+            filterForm.action = 'results.html'; // 기본값 (혹은 원하는 페이지)
+        }
 
-        // --- UPDATED: No longer passing detail_options via URL for filters.html ---
         const detailFiltersButton = document.getElementById('detailFiltersButton');
-        detailFiltersButton.href = 'detail_filters.html'; // Simply link to detail_filters.html
+        detailFiltersButton.href = 'detail_filters.html';
     });
   </script>
 </body>
