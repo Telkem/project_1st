@@ -1,230 +1,118 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>원하는 동네 입력</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=SUIT:wght@400;600&display=swap" rel="stylesheet">
+  <title>서울 구 선택</title>
+  <link href="https://fonts.googleapis.com/css2?family=SUIT:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
+      background-color: #f5f7fa;
       font-family: 'SUIT', sans-serif;
-      background: #f5f7fa;
+      margin: 0;
       display: flex;
-      flex-direction: column;
+      justify-content: center;
       align-items: center;
-      padding: 40px 20px;
+      height: 100vh;
+    }
+
+    .container {
+      background: #fff;
+      padding: 40px 30px;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+      width: 100%;
+      max-width: 480px;
+      box-sizing: border-box;
     }
 
     h2 {
-      background-color: #d9d9d9;
-      padding: 14px 24px;
-      border-radius: 20px;
-      margin-bottom: 20px;
-      font-size: 20px;
+      text-align: center;
+      font-size: 22px;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 30px;
     }
 
-    .input-group {
+    .search-group {
       display: flex;
-      align-items: center;
       gap: 10px;
       margin-bottom: 30px;
     }
 
-    .input-group input {
-      padding: 10px 16px;
-      border-radius: 12px;
-      border: none;
+    .search-group input {
+      flex: 1;
+      padding: 14px;
+      font-size: 15px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+    }
+
+    .search-group button {
+      padding: 0 16px;
       background-color: #d9d9d9;
-      font-size: 16px;
-      color: #555;
-    }
-
-    .input-group button {
-      padding: 10px 16px;
-      border-radius: 12px;
       border: none;
-      background-color: #aaa;
-      color: white;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
       cursor: pointer;
-      font-size: 16px;
     }
 
-    .districts-container {
+    .district-buttons {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
-      justify-content: center;
-    }
-
-   .district-button {
-      padding: 10px 16px;
-      background-color: #ffffff;   /* 흰색 배경 */
-      color: #000000;              /* 흰색 글씨 */
-      border: 1px solid #ccc;
-      border-radius: 12px;
-      cursor: pointer;
-      font-size: 15px;
-      transition: background-color 0.2s ease;
-    }
-.district-button:hover {
-  background-color: #296de0;
-}
-  </style>
-</head>
-<body>
-  <h2>원하는 동네를 입력해주세요!</h2>
-
-  <div class="input-group">
-    <input type="text" id="region-input" placeholder="지역을 입력해주세요" />
-    <button onclick="searchDistricts()">검색</button>
-  </div>
-
-  <div id="districts" class="districts-container"></div>
-
-  <script>
-    const seoulDistricts = [
-      "강남구", "강동구", "강북구", "강서구", "관악구", "광진구", "구로구",
-      "금천구", "노원구", "도봉구", "동대문구", "동작구", "마포구", "서대문구",
-      "서초구", "성동구", "성북구", "송파구", "양천구", "영등포구", "용산구",
-      "은평구", "종로구", "중구", "중랑구"
-    ];
-
-    function searchDistricts() {
-      const input = document.getElementById("region-input").value.trim();
-      const container = document.getElementById("districts");
-      container.innerHTML = "";
-
-      if (input === "서울") {
-        seoulDistricts.forEach((gu) => {
-          const button = document.createElement("button");
-          button.className = "district-button";
-          button.textContent = gu;
-          button.onclick = () => {
-            // 이동 시 지역 정보 파라미터 전달
-            window.location.href = `filters.html?selected_region=${encodeURIComponent(gu)}`;
-          };
-          container.appendChild(button);
-        });
-      } else {
-        container.innerHTML = "<p>검색 결과가 없습니다.</p>";
-      }
-    }
-  </script>
-</body>
-=======
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <title>원하는 동네 입력</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=SUIT:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'SUIT', sans-serif;
-      background: #f5f7fa;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 40px 20px;
-    }
-
-    h2 {
-      background-color: #d9d9d9;
-      padding: 14px 24px;
-      border-radius: 20px;
-      margin-bottom: 20px;
-      font-size: 20px;
-    }
-
-    .input-group {
-      display: flex;
-      align-items: center;
       gap: 10px;
-      margin-bottom: 30px;
-    }
-
-    .input-group input {
-      padding: 10px 16px;
-      border-radius: 12px;
-      border: none;
-      background-color: #d9d9d9;
-      font-size: 16px;
-      color: #555;
-    }
-
-    .input-group button {
-      padding: 10px 16px;
-      border-radius: 12px;
-      border: none;
-      background-color: #aaa;
-      color: white;
-      cursor: pointer;
-      font-size: 16px;
-    }
-
-    .districts-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
       justify-content: center;
     }
 
-   .district-button {
+    .district-button {
+      background-color: #f0f0f0;
+      color: #000;
       padding: 10px 16px;
-      background-color: #ffffff;   /* 흰색 배경 */
-      color: #000000;              /* 흰색 글씨 */
-      border: 1px solid #ccc;
-      border-radius: 12px;
+      border-radius: 8px;
+      border: none;
       cursor: pointer;
-      font-size: 15px;
-      transition: background-color 0.2s ease;
+      font-size: 14px;
     }
-.district-button:hover {
-  background-color: #296de0;
-}
+
+    .district-button:hover {
+      background-color: #e0e0e0;
+    }
   </style>
 </head>
 <body>
-  <h2>원하는 동네를 입력해주세요!</h2>
-
-  <div class="input-group">
-    <input type="text" id="region-input" placeholder="지역을 입력해주세요" />
-    <button onclick="searchDistricts()">검색</button>
+  <div class="container">
+    <h2>원하는 동네를 입력해주세요!</h2>
+    <div class="search-group">
+      <input type="text" id="regionInput" placeholder="지역을 입력해주세요">
+      <button onclick="searchDistricts()">검색</button>
+    </div>
+    <div class="district-buttons" id="districtList"></div>
   </div>
-
-  <div id="districts" class="districts-container"></div>
 
   <script>
     const seoulDistricts = [
-      "강남구", "강동구", "강북구", "강서구", "관악구", "광진구", "구로구",
-      "금천구", "노원구", "도봉구", "동대문구", "동작구", "마포구", "서대문구",
-      "서초구", "성동구", "성북구", "송파구", "양천구", "영등포구", "용산구",
-      "은평구", "종로구", "중구", "중랑구"
+      "강남구", "강동구", "강북구", "강서구", "관악구", "광진구", "구로구", "금천구",
+      "노원구", "도봉구", "동대문구", "동작구", "마포구", "서대문구", "서초구", "성동구",
+      "성북구", "송파구", "양천구", "영등포구", "용산구", "은평구", "종로구", "중구", "중랑구"
     ];
 
     function searchDistricts() {
-      const input = document.getElementById("region-input").value.trim();
-      const container = document.getElementById("districts");
-      container.innerHTML = "";
+      const input = document.getElementById("regionInput").value.trim();
+      const listContainer = document.getElementById("districtList");
+      listContainer.innerHTML = "";
 
-      if (input === "서울") {
-        seoulDistricts.forEach((gu) => {
-          const button = document.createElement("button");
-          button.className = "district-button";
-          button.textContent = gu;
-          button.onclick = () => {
-            // 이동 시 지역 정보 파라미터 전달
-            window.location.href = `filters.html?selected_region=${encodeURIComponent(gu)}`;
+      if (input === "서울" || input.includes("서울")) {
+        seoulDistricts.forEach(district => {
+          const btn = document.createElement("button");
+          btn.className = "district-button";
+          btn.textContent = district;
+          btn.onclick = () => {
+            window.location.href = `filters.html?selected_region=${encodeURIComponent(district)}`;
           };
-          container.appendChild(button);
+          listContainer.appendChild(btn);
         });
-      } else {
-        container.innerHTML = "<p>검색 결과가 없습니다.</p>";
       }
     }
   </script>
 </body>
->>>>>>> 7b19df1dcb38e15ba903c5dcad42cc2f227d5879
 </html>
