@@ -54,6 +54,7 @@
       display: flex;
       flex-direction: column;
       gap: 20px;
+      margin-bottom: 30px; /* Adjusted margin to make space for the new button */
     }
 
     .property-item {
@@ -61,7 +62,7 @@
       padding: 20px;
       border-radius: 12px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-      display: flex; /* Changed to flex to allow hiding with display: none */
+      display: flex;
       flex-direction: column;
       gap: 15px;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -112,6 +113,43 @@
     .property-item .priority {
       color: #6a6a6a;
       font-weight: normal;
+    }
+
+    /* Styles for the bottom button container (copied from results.html) */
+    .bottom-button-container {
+      width: 100%;
+      max-width: 700px;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .bottom-button {
+      background-color: #3a86ff;
+      color: white;
+      padding: 15px 25px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 1.1em;
+      font-weight: 600;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: calc(100% - 40px);
+      max-width: calc(700px - 40px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    .bottom-button i {
+        margin-right: 10px;
+    }
+
+    .bottom-button:hover {
+      background-color: #296de0;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
     }
   </style>
 </head>
@@ -178,6 +216,10 @@
       </div>
     </div>
 
+  </div>
+
+  <div class="bottom-button-container">
+    <a href="filters.html?search_type=region" class="bottom-button"><i class="fas fa-arrow-left"></i> 조건 선택으로 돌아가기</a>
   </div>
 
   <script>
