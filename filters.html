@@ -77,16 +77,15 @@
     }
 
     .slider-labels {
-        display: flex; /* Changed from grid to flex */
-        justify-content: space-between; /* Distribute items evenly with space between them */
+        display: flex;
+        justify-content: space-between;
         margin-top: 10px;
         font-size: 14px;
         color: #555;
     }
     .slider-labels span {
-        text-align: center; /* Center text within each span */
+        text-align: center;
     }
-
 
     input[type="range"] {
       width: 100%;
@@ -120,6 +119,16 @@
       border-radius: 50%;
       cursor: grab;
       box-shadow: 0 0 2px rgba(0,0,0,0.2);
+    }
+
+    /* Style for displaying current value */
+    .current-value-display {
+        display: block; /* Ensures it takes its own line */
+        text-align: center;
+        font-size: 16px;
+        font-weight: 600;
+        color: #3a86ff;
+        margin-bottom: 5px; /* Space between value and slider */
     }
 
     .button-group {
@@ -192,6 +201,7 @@
       <div class="form-group">
         <label>원하는 보증금 범위를 선택하세요</label>
         <div class="range-slider-container">
+            <span id="depositCurrentValue" class="current-value-display"></span>
             <input type="range" id="depositRange" name="deposit" min="0" max="20000" step="100" value="0">
             <div class="slider-labels">
                 <span>최소</span>
@@ -208,6 +218,7 @@
       <div class="form-group">
         <label>원하는 월세를 범위를 선택하세요</label>
         <div class="range-slider-container">
+            <span id="rentCurrentValue" class="current-value-display"></span>
             <input type="range" id="rentRange" name="rent" min="0" max="200" step="10" value="0">
             <div class="slider-labels">
                 <span>최소</span>
@@ -255,24 +266,70 @@
 
   <script>
     const depositRange = document.getElementById('depositRange');
-    const depositMinValInput = document.getElementById('deposit_min_val'); // Placeholder for min
-    const depositMaxValInput = document.getElementById('deposit_max_val'); // Placeholder for max
+    const depositCurrentValueDisplay = document.getElementById('depositCurrentValue');
+    const depositMinValInput = document.getElementById('deposit_min_val');
+    const depositMaxValInput = document.getElementById('deposit_max_val');
+
+    function formatDepositValue(value) {
+        if (value == 0) return '최소';
+        if (value == 20000) return '최대';
+        if (value >= 10000) {
+            return (value / 10000) + '억';
+        }
+        return value + '만원';
+    }
 
     depositRange.addEventListener('input', () => {
-        depositMaxValInput.value = depositRange.value;
+        const value = parseInt(depositRange.value);
+        depositCurrentValueDisplay.textContent = formatDepositValue(value);
+        depositMaxValInput.value = value; // Assuming single slider sets max
+        // If a dual-thumb slider, depositMinValInput would be updated by the other thumb.
     });
+
+    // Initialize display value on load
+    depositCurrentValueDisplay.textContent = formatDepositValue(parseInt(depositRange.value));
+    depositMaxValInput.value = parseInt(depositRange.value);
+
 
     const rentRange = document.getElementById('rentRange');
-    const rentMinValInput = document.getElementById('rent_min_val'); // Placeholder for min
-    const rentMaxValInput = document.getElementById('rent_max_val'); // Placeholder for max
+    const rentCurrentValueDisplay = document.getElementById('rentCurrentValue');
+    const rentMinValInput = document.getElementById('rent_min_val');
+    const rentMaxValInput = document.getElementById('rent_max_val');
+
+    function formatRentValue(value) {
+        if (value == 0) return '최소';
+        if (value == 200) return '최대';
+        return value + '만';
+    }
 
     rentRange.addEventListener('input', () => {
-        rentMaxValInput.value = rentRange.value;
+        const value = parseInt(rentRange.value);
+        rentCurrentValueDisplay.textContent = formatRentValue(value);
+        rentMaxValInput.value = value; // Assuming single slider sets max
+        // If a dual-thumb slider, rentMinValInput would be updated by the other thumb.
     });
 
-    // Set initial values (optional, based on your form logic)
-    depositMaxValInput.value = depositRange.value;
-    rentMaxValInput.value = rentRange.value;
+    // Initialize display value on load
+    rentCurrentValueDisplay.textContent = formatRentValue(parseInt(rentRange.value));
+    rentMaxValInput.value = parseInt(rentRange.value);
+
+    // Existing script for region selection (if applicable)
+    window.addEventListener('load', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        let selectedRegion = urlParams.get('selected_region');
+        const regionButtonTextSpan = document.querySelector('.region-button .placeholder-text');
+        const hiddenRegionInput = document.getElementById('selected-region-input');
+
+        if (selectedRegion) {
+            selectedRegion = decodeURIComponent(selectedRegion);
+            regionButtonTextSpan.textContent = selectedRegion;
+            regionButtonTextSpan.style.color = '#333';
+            hiddenRegionInput.value = selectedRegion;
+        }
+
+        const regionSelectionButton = document.getElementById('region-selection-button');
+        regionSelectionButton.href = 'region.html';
+    });
   </script>
 </body>
 </html>
