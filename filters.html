@@ -89,25 +89,25 @@
 
     input[type="range"] {
       width: 100%;
-      -webkit-appearance: none; /* Override default look */
+      -webkit-appearance: none;
       appearance: none;
-      height: 5px; /* Height of the track */
-      background: #ddd; /* Track color */
+      height: 5px;
+      background: #ddd;
       border-radius: 5px;
-      outline: none; /* Remove focus outline */
-      margin: 10px 0; /* Vertical margin */
+      outline: none;
+      margin: 10px 0;
     }
 
     /* Webkit (Chrome, Safari, Edge) thumb style */
     input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
-      width: 20px; /* Size of the thumb */
+      width: 20px;
       height: 20px;
-      background: #3a86ff; /* Thumb color */
-      border-radius: 50%; /* Make it round */
+      background: #3a86ff;
+      border-radius: 50%;
       cursor: grab;
-      margin-top: -7.5px; /* Center thumb vertically on track */
+      margin-top: -7.5px;
       box-shadow: 0 0 2px rgba(0,0,0,0.2);
     }
 
@@ -123,24 +123,24 @@
 
     /* Style for displaying current value */
     .current-value-display {
-        display: block; /* Ensures it takes its own line */
+        display: block;
         text-align: center;
         font-size: 16px;
         font-weight: 600;
         color: #3a86ff;
-        margin-bottom: 5px; /* Space between value and slider */
+        margin-bottom: 5px;
     }
 
     .button-group {
       display: flex;
       gap: 10px;
       margin-top: 30px;
-      flex-direction: row; /* Horizontal layout for buttons */
+      flex-direction: row;
       justify-content: space-between;
     }
     .button-group button,
     .button-group a {
-      padding: 14px 0; /* Vertical padding only, width handled by flex-basis */
+      padding: 14px 0;
       font-size: 16px;
       font-weight: 700;
       border: none;
@@ -148,25 +148,25 @@
       cursor: pointer;
       transition: background-color 0.3s ease;
       text-align: center;
-      flex-basis: calc(33.33% - 7px); /* Approximately 3 buttons per row with gaps */
-      box-sizing: border-box; /* Crucial for consistent sizing with padding */
-      text-decoration: none; /* For the anchor tag */
-      color: white; /* Default text color for buttons */
+      flex-basis: calc(33.33% - 7px);
+      box-sizing: border-box;
+      text-decoration: none;
+      color: white;
     }
     .button-group .previous-button {
-      background-color: #6c757d; /* Grey color for "이전" */
+      background-color: #6c757d;
     }
     .button-group .previous-button:hover {
       background-color: #5a6268;
     }
     .button-group .detail-filters-button {
-      background-color: #6c757d; /* Grey color for "상세필터 선택" */
+      background-color: #6c757d;
     }
     .button-group .detail-filters-button:hover {
       background-color: #5a6268;
     }
     .button-group .submit-button {
-      background-color: #3a86ff; /* Blue color for "확인" */
+      background-color: #3a86ff;
       color: white;
     }
     .button-group .submit-button:hover {
@@ -258,7 +258,7 @@
 
       <div class="button-group">
         <a href="region.html" class="previous-button">이전</a>
-        <a href="detail_filters.html" class="detail-filters-button">상세필터 선택</a>
+        <a href="detail_filters.html" class="detail-filters-button" id="detailFiltersButton">상세필터 선택</a>
         <button type="submit" class="submit-button">확인</button>
       </div>
     </form>
@@ -282,11 +282,9 @@
     depositRange.addEventListener('input', () => {
         const value = parseInt(depositRange.value);
         depositCurrentValueDisplay.textContent = formatDepositValue(value);
-        depositMaxValInput.value = value; // Assuming single slider sets max
-        // If a dual-thumb slider, depositMinValInput would be updated by the other thumb.
+        depositMaxValInput.value = value;
     });
 
-    // Initialize display value on load
     depositCurrentValueDisplay.textContent = formatDepositValue(parseInt(depositRange.value));
     depositMaxValInput.value = parseInt(depositRange.value);
 
@@ -305,11 +303,9 @@
     rentRange.addEventListener('input', () => {
         const value = parseInt(rentRange.value);
         rentCurrentValueDisplay.textContent = formatRentValue(value);
-        rentMaxValInput.value = value; // Assuming single slider sets max
-        // If a dual-thumb slider, rentMinValInput would be updated by the other thumb.
+        rentMaxValInput.value = value;
     });
 
-    // Initialize display value on load
     rentCurrentValueDisplay.textContent = formatRentValue(parseInt(rentRange.value));
     rentMaxValInput.value = parseInt(rentRange.value);
 
@@ -329,6 +325,10 @@
 
         const regionSelectionButton = document.getElementById('region-selection-button');
         regionSelectionButton.href = 'region.html';
+
+        // --- UPDATED: No longer passing detail_options via URL for filters.html ---
+        const detailFiltersButton = document.getElementById('detailFiltersButton');
+        detailFiltersButton.href = 'detail_filters.html'; // Simply link to detail_filters.html
     });
   </script>
 </body>
