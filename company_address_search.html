@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>회사 주소 검색</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=SUIT:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'SUIT', sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      padding: 40px;
+      text-align: center;
+      width: 90%;
+      max-width: 500px;
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 30px;
+      font-size: 24px;
+      font-weight: 600;
+    }
+    .search-box {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      width: 100%;
+    }
+    .search-input {
+      flex-grow: 1;
+      padding: 14px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    .search-button {
+      padding: 14px 20px;
+      background-color: #e0e0e0;
+      color: #333;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .search-button:hover {
+      background-color: #d0d0d0;
+    }
+    #search-results {
+      margin-top: 20px;
+      text-align: left;
+      border: 1px solid #eee; /* Added border for search results area */
+      border-radius: 8px;
+      max-height: 300px; /* Limit height for scrollability */
+      overflow-y: auto; /* Enable vertical scrolling */
+    }
+    .result-item {
+      padding: 12px 15px;
+      border-bottom: 1px solid #eee;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      font-size: 15px;
+      color: #444;
+    }
+    .result-item:last-child {
+      border-bottom: none;
+    }
+    .result-item:hover {
+      background-color: #f0f0f0;
+    }
+
+    /* Styles for form groups and select (similar to filters.html for consistency) */
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left; /* Align labels/inputs to the left within the container */
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #333;
+      font-size: 15px; /* Adjust label font size if needed */
+    }
+    .form-group select {
+      width: calc(100% - 0px); /* Adjust width as needed for this context */
+      padding: 12px 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      box-sizing: border-box;
+      background-color: white;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20256%20512%22%3E%3Cpath%20fill%3D%22%23495057%22%20d%3D%22M192%20256L64%20128v256l128-128z%22%2F%3E%3C%2Fsvg%3E');
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 12px;
+      padding-right: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>회사 주소를 입력해주세요!</h1>
+
+    <div class="form-group">
+      <label for="address-input">주소 검색</label>
+      <div class="search-box">
+        <input type="text" id="address-input" class="search-input" placeholder="도로명, 지번, 건물명 검색" />
+        <button class="search-button" onclick="searchAddress()">검색</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="radius-select">반경 선택</label>
+      <select id="radius-select">
+        <option value="1">1km</option>
+        <option value="3" selected>3km</option>
+        <option value="5">5km</option>
+        <option value="10">10km</option>
+        <option value="999">반경 무제한</option>
+      </select>
+    </div>
+
+    <div id="search-results">
+      </div>
+  </div>
+
+  <script>
+    function searchAddress() {
+      const addressInput = document.getElementById('address-input').value.toLowerCase(); // Convert input to lower case for case-insensitive search
+      const radius = document.getElementById('radius-select').value;
+      const searchResultsDiv = document.getElementById('search-results');
+      searchResultsDiv.innerHTML = '<p style="text-align: center; padding: 20px;">검색 중...</p>';
+
+      // IMPORTANT: This is a SIMULATION.
+      // In a real application, you would integrate with a real address search API
+      // (e.g., Kakao Maps API, Naver Maps API, etc.) via a backend server.
+      // The code below just shows dummy results for demonstration.
+
+      // A more comprehensive list of dummy addresses for better simulation
+      const allDummyAddresses = [
+        '서울특별시 강남구 테헤란로 123',
+        '서울특별시 종로구 세종대로 456',
+        '서울특별시 마포구 양화로 789',
+        '서울특별시 서초구 강남대로 1234',
+        '서울특별시 송파구 올림픽로 100',
+        '부산광역시 해운대구 센텀남대로 123',
+        '부산광역시 부산진구 중앙대로 456',
+        '대전광역시 서구 둔산로 50',
+        '광주광역시 서구 상무대로 300',
+        '인천광역시 남동구 서창남로 15',
+        '경기도 성남시 분당구 판교역로 20',
+        '경기도 수원시 영통구 광교중앙로 100',
+        '제주시 서해안로 10',
+        '천안시 서북구 두정동 500',
+      ];
+
+
+      setTimeout(() => {
+        let resultsHtml = '<h3>검색 결과:</h3>';
+        const filteredResults = allDummyAddresses.filter(addr => addr.toLowerCase().includes(addressInput));
+
+        if (addressInput === '') { // If search input is empty, show no results or a prompt
+            searchResultsDiv.innerHTML = `<p style="text-align: center; padding: 20px; color: #888;">검색어를 입력해주세요.</p>`;
+            return;
+        }
+
+        if (filteredResults.length > 0) {
+          filteredResults.forEach(result => {
+            resultsHtml += `<div class="result-item" onclick="selectAddress('${result}', '${radius}')">${result} (반경 ${radius}km)</div>`;
+          });
+          searchResultsDiv.innerHTML = resultsHtml;
+        } else {
+          searchResultsDiv.innerHTML = `<p style="text-align: center; padding: 20px; color: #888;">죄송합니다. '${addressInput}'에 대한 검색 결과가 없습니다.</p>`;
+        }
+      }, 700); // Simulate a 0.7-second delay for the API call
+    }
+
+    // Function to handle selection of an address
+    function selectAddress(address, radius) {
+      // Format the address string to include the radius
+      const formattedAddress = `회사위주-${address} (반경 ${radius}km)`;
+      // Redirect to filters.html and pass the formatted address as a URL parameter
+      window.location.href = 'filters.html?selected_region=' + encodeURIComponent(formattedAddress);
+    }
+
+    // Allow searching by pressing Enter key
+    document.getElementById('address-input').addEventListener('keypress', function(event) {
+      if (event.key === 'Enter') {
+        event.preventDefault(); // Prevent default form submission if any
+        searchAddress();
+      }
+    });
+  </script>
+</body>
+</html>

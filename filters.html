@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>매물 조건 입력</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=SUIT:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    /* Specific styles for filters.html, overriding or extending style.css */
+    body {
+      background: #f5f7fa; /* Lighter background for forms */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh; /* Ensure it takes full viewport height */
+      padding: 20px 0;
+      font-family: 'SUIT', sans-serif;
+    }
+    .form-container {
+      max-width: 375px; /* Adjusted to be closer to a mobile screen size as depicted */
+      width: 100%;
+      margin: auto; /* Center it */
+      padding: 20px; /* Reduced padding */
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+    .form-container h2 {
+      margin-bottom: 24px;
+      text-align: center;
+      display: none; /* Hidden as per image */
+    }
+    .form-group {
+      margin-bottom: 15px; /* Reduced margin */
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #333;
+      display: flex;
+      align-items: center;
+      padding: 10px 15px; /* Padding for the label/button area */
+      background-color: #f0f0f0; /* Light grey background for sections */
+      border-radius: 8px;
+      position: relative;
+    }
+    .form-group label i {
+      margin-right: 8px;
+      color: #3a86ff; /* Icon color */
+    }
+    .form-group select {
+      width: 100%; /* Full width as in image */
+      padding: 12px 15px; /* Padding for dropdowns */
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      box-sizing: border-box;
+      background-color: white;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20512%22%3E%3Cpath%20fill%3D%22%23495057%22%20d%3D%22M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0L160 273.4l96.5-96.5c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z%22%2F%3E%3C%2Fsvg%3E');
+      background-repeat: no-repeat;
+      background-position: right 15px center;
+      background-size: 12px;
+      margin-top: 10px; /* Space between label and select */
+    }
+
+    /* Style for the options displayed as buttons under Age Group */
+    /* .options-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+      justify-content: space-between;
+    }
+    .option-button {
+      flex: 1 1 calc(50% - 10px);
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #fff;
+      text-align: center;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+      box-sizing: border-box;
+    }
+    .option-button.selected {
+      background-color: #e0f2f7;
+      border-color: #3a86ff;
+      color: #3a86ff;
+      font-weight: 600;
+    } */ /* Removed these styles as Age Group is now a select */
+
+    /* Specific width for slider labels, not a general option-button */
+    .slider-labels {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+        padding: 0 10px; /* Adjust padding to align with slider track if needed */
+        font-size: 14px;
+        color: #555;
+    }
+    .slider-labels span {
+        text-align: center;
+        flex: 1; /* Distribute space evenly */
+    }
+    /* Placeholder for the slider track - actual slider would be input[type="range"] */
+    .slider-track {
+        width: 100%;
+        height: 5px;
+        background: #ddd;
+        border-radius: 5px;
+        margin-top: 5px;
+        position: relative;
+    }
+    .slider-thumb {
+        position: absolute;
+        width: 15px;
+        height: 15px;
+        background: #3a86ff;
+        border-radius: 50%;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: grab;
+    }
+    /* You'd have multiple .slider-thumb for a range slider or a more complex single one */
+
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 30px;
+      flex-direction: row; /* Horizontal layout for buttons */
+      justify-content: space-between;
+    }
+    .button-group button,
+    .button-group a {
+      padding: 14px 0; /* Vertical padding only, width handled by flex-basis */
+      font-size: 16px;
+      font-weight: 700;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      text-align: center;
+      flex-basis: calc(33.33% - 7px); /* Approximately 3 buttons per row with gaps */
+      box-sizing: border-box; /* Crucial for consistent sizing with padding */
+      text-decoration: none; /* For the anchor tag */
+      color: white; /* Default text color for buttons */
+    }
+    .button-group .previous-button {
+      background-color: #6c757d; /* Grey color for "이전" */
+    }
+    .button-group .previous-button:hover {
+      background-color: #5a6268;
+    }
+    .button-group .detail-filters-button {
+      background-color: #6c757d; /* Grey color for "상세필터 선택" */
+    }
+    .button-group .detail-filters-button:hover {
+      background-color: #5a6268;
+    }
+    .button-group .submit-button {
+      background-color: #3a86ff; /* Blue color for "확인" */
+      color: white;
+    }
+    .button-group .submit-button:hover {
+      background-color: #2a6edc;
+    }
+
+    .form-group label .arrow-icon {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 14px;
+        color: #495057;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <form action="results.html" method="get">
+      <div class="form-group">
+        <label>연령대를 선택하세요<i class="fas fa-chevron-down arrow-icon"></i></label>
+        <select name="age_group">
+          <option value="">선택 안함</option>
+          <option value="20s">20대</option>
+          <option value="30s">30대</option>
+          <option value="40s">40대</option>
+          <option value="50s_over">50대 이상</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>원하는 보증금 범위를 선택하세요</label>
+        <div class="slider-labels">
+            <span>최소</span>
+            <span>5천만</span>
+            <span>1억</span>
+            <span>1.5억</span>
+            <span>최대</span>
+        </div>
+        <div class="slider-track">
+            </div>
+        <input type="hidden" name="deposit_min" value="" />
+        <input type="hidden" name="deposit_max" value="" />
+      </div>
+
+      <div class="form-group">
+        <label>원하는 월세를 범위를 선택하세요</label>
+        <div class="slider-labels">
+            <span>최소</span>
+            <span>50만</span>
+            <span>100만</span>
+            <span>150만</span>
+            <span>최대</span>
+        </div>
+        <div class="slider-track">
+            </div>
+        <input type="hidden" name="rent_min" value="" />
+        <input type="hidden" name="rent_max" value="" />
+      </div>
+
+      <div class="form-group">
+        <label>평수를 선택하세요<i class="fas fa-chevron-down arrow-icon"></i></label>
+        <select name="area">
+          <option value="">선택 안함</option>
+          <option value="5">~5</option>
+          <option value="10">~10</option>
+          <option value="15">~15</option>
+          <option value="20">~20</option>
+          <option value="25">~25</option>
+          <option value="30">~30</option>
+          <option value="31">30 이상</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>방 개수를 선택하세요<i class="fas fa-chevron-down arrow-icon"></i></label>
+        <select name="rooms">
+          <option value="">선택 안함</option>
+          <option value="1">1개</option>
+          <option value="2">2개</option>
+          <option value="3_plus">3개 이상</option>
+        </select>
+      </div>
+
+      <div class="button-group">
+        <button type="button" class="previous-button">이전</button>
+        <a href="detail_filters.html" class="detail-filters-button">상세필터 선택</a>
+        <button type="submit" class="submit-button">확인</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    // Removed the JavaScript for age group buttons as it's now a select dropdown.
+  </script>
+</body>
+</html>
